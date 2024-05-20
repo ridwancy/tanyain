@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Requests\UpdateQuestionRequest;
 use Cviebrock\EloquentSluggable\Services\SlugService;
+use Illuminate\Support\Facades\Storage;
 
 class QuestionController extends Controller
 {
@@ -18,7 +19,7 @@ class QuestionController extends Controller
     public function index()
     {
         return view('profileQuestion', [
-            'questions' => Question::where('user_id', auth()->user()->id)                    
+            'questions' => Question::with(['answers', 'user'])->where('user_id', auth()->user()->id)                    
             ->latest('updated_at')
             ->latest('created_at')
             ->get(),
@@ -102,6 +103,9 @@ class QuestionController extends Controller
         }
         $validatedData = $request->validate($rules);
         if($request->file('photo')){
+            if($request->oldphoto){
+                Storage::delete($request->oldphoto);
+            }
             $validatedData['photo'] = $request->file('photo')->store('question-photos');
         }
         $validatedData['user_id'] = auth()->user()->id;
@@ -124,7 +128,9 @@ class QuestionController extends Controller
         }
         $answer->delete();
         }
-
+        if($question->photo){
+            Storage::delete($question->photo);
+        }
         $question->delete();
 
         return redirect('/question')->with('success', 'Pertanyaan berhasil dihapus!');

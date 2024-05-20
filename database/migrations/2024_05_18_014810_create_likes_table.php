@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('answers', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->foreignId('question_id');
-            $table->text('body');
-            $table->string('photo')->nullable();
-            $table->timestamp('published_at')->nullable()->diffForHumans();
-            $table->timestamps();
+            $table->foreignId('answer_id');
         });
     }
 
@@ -27,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('answers');
+        Schema::dropIfExists('likes');
     }
 };

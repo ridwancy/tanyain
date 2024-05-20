@@ -31,6 +31,16 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Subject::create([
+            'name_subject' => 'Statistika',
+            'slug' => 'statistika'
+        ]);
+
+        Subject::create([
+            'name_subject' => 'Berpikir Komputasional',
+            'slug' => 'komputasional'
+        ]);
+
+        Subject::create([
             'name_subject' => 'Kimia',
             'slug' => 'kimia'
         ]);
@@ -56,12 +66,37 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Subject::create([
+            'name_subject' => 'Pancasila',
+            'slug' => 'pancasila'
+        ]);
+
+        Subject::create([
+            'name_subject' => 'Kewarganegaraan',
+            'slug' => 'kewarganegaraan'
+        ]);
+
+        Subject::create([
+            'name_subject' => 'Pendidikan Agama',
+            'slug' => 'pendidikanagama'
+        ]);
+
+        Subject::create([
+            'name_subject' => 'Bahasa Indonesia',
+            'slug' => 'indonesia'
+        ]);
+
+        Subject::create([
+            'name_subject' => 'Bahasa Inggris',
+            'slug' => 'inggris'
+        ]);
+
+        Subject::create([
             'name_subject' => 'Pertanian',
             'slug' => 'pertanian'
         ]);
 
-        Question::factory(20)->create();
-        Answer::factory(30)->create();
-        Comment::factory(45)->create();
+        Question::factory(30)->create();
+        Answer::factory(45)->create();
+        Comment::factory(60)->create();
     }
 }

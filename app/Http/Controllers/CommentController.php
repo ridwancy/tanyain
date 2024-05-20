@@ -23,7 +23,7 @@ class CommentController extends Controller
      */
     public function create($id)
     {
-        $answer = Answer::where('id', $id)->firstOrFail();
+        $answer = Answer::with('question')->where('id', $id)->firstOrFail();
         return view('createc',[
             'answer' => $answer,
             'answer_id' => $answer->id,
@@ -61,8 +61,9 @@ class CommentController extends Controller
      */
     public function edit($id)
     {
-        $answer = Answer::where('id', $id)->firstOrFail();
+        $answer = Answer::with('question')->where('id', $id)->firstOrFail();
         $comment = Comment::where('answer_id', $answer->id)->where('user_id', auth()->user()->id)->firstOrFail();
+        
         return view('editc', [
             'answer' => $answer,
             'answer_id' => $answer->id,
@@ -76,7 +77,7 @@ class CommentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $answer = Answer::where('id', $id)->firstOrFail();
+        $answer = Answer::with('question')->where('id', $id)->firstOrFail();
         $comment = Comment::where('answer_id', $answer->id)->where('user_id', auth()->user()->id)->firstOrFail();
         $slug = $comment->answer->question->slug;
         $validatedData = $request->validate([
@@ -95,7 +96,7 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        $answer = Answer::where('id', $id)->firstOrFail();
+        $answer = Answer::with('question')->where('id', $id)->firstOrFail();
         $comment = Comment::where('answer_id', $answer->id)->where('user_id', auth()->user()->id)->firstOrFail();
         $slug = $comment->answer->question->slug;
         $comment->delete();

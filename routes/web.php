@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\RegisController;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/tanyain', function(){
     return view('tanyain');
-});
+})->middleware('guest');
 Route::get('/about', function(){
     return view('about');
 });
@@ -57,7 +58,7 @@ Route::post('/logout', [LoginController::class, 'logout']);
 
 Route::get('/subject/{subject:slug}', function($slug){
     $subject = Subject::where('slug', $slug)->firstOrFail();
-    $questions = $subject->questions; 
+    $questions = $subject->questions()->latest('updated_at')->latest('created_at')->get(); 
     return view('subject', [
         'subject'=> $subject,
         'subjects' => Subject::all(),
@@ -79,6 +80,7 @@ Route::get('/home/{question:slug}', function($slug){
 Route::get('/question/checkSlug', [QuestionController::class, 'checkSlug'])->middleware('auth');
 Route::resource('/question', QuestionController::class)->middleware('auth');
 Route::resource('/Answer', AnswerController::class)->middleware('auth');
+Route::post('/like/{answer}', [LikeController::class, 'like'])->name('answers.like')->middleware('auth');
 Route::resource('/comment', CommentController::class)->middleware('auth');
 Route::resource('/user', UserController::class)->middleware('auth');
 Route::get('/Answer/create/{question:slug}', [AnswerController::class, 'create'])->middleware('auth');

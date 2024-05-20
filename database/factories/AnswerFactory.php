@@ -18,9 +18,9 @@ class AnswerFactory extends Factory
     {
         return [
             'body' => $this->faker->paragraphs(rand(4, 8), true),
-            'photo' => $this->faker->imageUrl(640, 480, true),
+            'photo' => null,
             'user_id' => mt_rand(1,10),
-            'question_id' => mt_rand(1,20)
+            'question_id' => mt_rand(1,30)
         ];
     }
 }

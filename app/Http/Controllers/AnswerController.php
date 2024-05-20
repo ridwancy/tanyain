@@ -17,7 +17,7 @@ class AnswerController extends Controller
     {
         return view('profileAnswer', [
             'questions' => Question::where('user_id', auth()->user()->id)->get(),
-            'answers' => Answer::where('user_id', auth()->user()->id)
+            'answers' => Answer::with('comments')->where('user_id', auth()->user()->id)
             ->latest('updated_at')
             ->latest('created_at')
             ->get(),
@@ -117,14 +117,7 @@ class AnswerController extends Controller
         return redirect('/Answer')->with('success', 'Jawaban berhasil dihapus!');
     }
 
-    // public function upvote(Answer $answer){
-    // $answer->increment('likes');
-    // return redirect()->back();
-    // }
 
-    // public function downvote(Answer $answer)
-    // {
-    //     $answer->decrement('likes');
-    //     return redirect()->back();
-    // }
+
+
 }

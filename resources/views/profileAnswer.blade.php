@@ -1,105 +1,195 @@
 
+
+
 <!doctype html>
 <html lang="en">
+  
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Profile</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>
+      Profile
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+    crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+    integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   </head>
-  <body>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/"><img src="/img/logo.png" alt="Logo" width="100" class="d-inline-block align-text-top">
-      </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/question/create">Ajukan Pertanyaan</a>
-        </li>
-        <li>
-          <form class="d-flex" action="/" >
-            <input class="form-control" type="text" placeholder="Cari pertanyaan.." name="search" value="{{ request('search') }}">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/profile">Profile</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Notifikasi</a>
-        </li>
-        <li class="nav-item">
-          <form action="/logout" method="post">
-            @csrf
-            <button type="submit">Logout</button>
-          </form>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-<section style="display: flex;">
-  <div class="card" style="width: 30rem; margin-right: 20px;">
-    <div class="card-header">
-        <h2> Selamat Datang di Profile {{ Auth::user()->username }}!!!! </h2>
-    </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item"><strong>Profile</strong></li>
-      <li class="list-group-item">Foto Profile</li>
-      <li class="list-group-item">{{ Auth::user()->username }}</li>
-      <li class="list-group-item">{{ Auth::user()->email }}</li>
-      <li class="list-group-item">Total Jumlah Like : 100</li>
-      <li class="list-group-item"><a href="/user/{{ $user->username }}/edit">Edit</a></li>
-      <form action="/user/{{ $user->username }}" method="post" class="d-inline">
-        @method('delete')
-        @csrf
-        <button class="btn btn-danger border-0" onclick="return confirm ('Apakah kamu yakin?')">Hapus</button>
-      </form>
-    </ul>
-  </div>
-<div style="flex: 1;">
-    <div class="card mt-3">
-      <h5 class="card-header"><a href="/question" style="text-decoration: none; color:inherit" >Pertanyaan ({{ count($questions) }})</a>  |  <a href="/Answer" style="text-decoration: none; color:inherit" >Jawaban ({{ count($answers) }})</a></h5>
-      @if(session()->has('success'))
-      <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-      @endif
-      @foreach ($answers as $answer)
-      <div class="card mt-3">
-      <h5 class="card-header">{{ $answer->question->subject->name_subject }}</h5>
-      <div class="card-body">
-          <p class="card-text">{{ $answer->body }}</p>
-          <div class="card mt-2">
-          <p>Jawaban dari pertanyaan :</p>
-          <h5>&#64;{{ $answer->question->user->username }}</h5>
-          <p>{{ $answer->question->body }}</p>
-        </div>
-          @if($answer->photo)
-          <img src="{{ asset('storage/' . $answer->photo) }}" alt="Answer Photo" style="max-width: 100%;">
-          @endif
-          <p class="card-text">{{ $answer->created_at->diffForHumans() }}</p>
-          <a href="/question/{{ $answer->question->slug }}" class="btn btn-primary">Lihat Lebih Lanjut</a> 
-          <a class="btn btn-success" href="/Answer/{{ $answer->question->slug }}/edit">Edit</a>
-          <form action="/Answer/{{ $answer->question->slug }}" method="post" class="d-inline">
-            @method('delete')
-            @csrf
-            <button class="btn btn-danger border-0" onclick="return confirm ('Apakah kamu yakin?')">Hapus</button>
-          </form>
-      </div>
-      </div>
-      @endforeach
+  
+  <body class="bg-primary">
+    <nav class="navbar navbar-expand-lg" style="background-color:#FAFAFA">
+      <div class="container">
+        <a class="navbar-brand mb-0 h1" href="/">
+          <img src="/img/logo-tanyain.png" alt="Logo" width="100" class="d-inline-block align-text-top">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+        aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon">
+          </span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                Home
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/question/create">
+                Ajukan Pertanyaan
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" style="color:#189F92" aria-current="page"
+              href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Profil
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" style="color:#189F92" aria-current="page" href="/profile">
+                    Akun
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/tanyain">
+                    Log Out
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
 
-</div>
-</section>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+          <form class="d-flex" action="/">
+            <div class="input-group">
+              <input class="form-control form-border" type="text" placeholder="Cari pertanyaan.." name="search" value="{{ request('search') }}">
+              <button class="btn btn-brand" type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <section class="container my-3">
+
+        <div class="row">
+          <div class="col-md-5 mb-3">
+        <div class="card card-cards" style="width: 27rem; margin-right: 20px; background-color: #FFFFFF;">
+          <div class="img-container">
+            <img src="img/download.png" alt="profile image">
+          </div>
+          <p class="info full-name">{{ Auth::user()->username }}</p>
+          <p class="infor email">
+              {{ Auth::user()->email }}
+          </p>
+          <p class="infor mb-4">{{ Auth::user()->answers()->withCount('likes')->get()->sum('likes_count') }} Like </p>
+          <div class="button-container">
+            <a class="btn btn-edit me-2" href="/user/{{ $user->username }}/edit">Edit</a>
+            <form action="/user/{{ $user->username }}" method="post" class="d-inline">
+                @method('delete')
+                @csrf
+                <button type="submit" class="btn btn-delete ms-2" onclick="return confirm ('Apakah kamu yakin?')">Hapus</button>
+            </form>
+          </div>  
+        </div>
+          </div>
+        <div class="col-md-7">
+          <div class="card mb-3">
+            <h5 class="card-header">
+              <a href="/question" style="text-decoration: none; color:inherit">
+                Pertanyaan ({{ count($questions) }})
+              </a>
+              |
+              <a href="/Answer" style="text-decoration: none; color:inherit">
+                Jawaban ({{ count($answers) }})
+              </a>
+            </h5>
+            @if(session()->has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{ session('success') }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
+            </div>
+            @endif
+            @foreach ($answers as $answer)
+            <div class="card mt-3">
+              <div class="card-header d-flex justify-content-between align-items-center">
+
+                  <div class="d-flex justify-content-start align-items-center mb-2">
+                    <h6 class="card-title me-2 mb-0">{{ $answer->question->subject->name_subject }}</h6>
+                    <span class="mx-2"> - </span>
+                    <p class="mb-0">{{ $answer->created_at->diffForHumans() }}</p>
+                  </div>
+                <div class="dropdown">
+                  <button class="btn btn-link p-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="color: #457B9D">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="/Answer/{{ $answer->question->slug }}/edit">Edit</a></li>
+                    <li>
+                      <form action="/question/{{ $answer->question->slug }}" method="post" class="d-inline">
+                        @method('delete')
+                        @csrf
+                        <button class="dropdown-item" onclick="return confirm('Apakah kamu yakin?')">Hapus</button>
+                      </form>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="card-body">
+                <p class="card-text">
+                  {{ $answer->body }}
+                </p>
+                @if($answer->photo)
+                  <img src="{{ asset('storage/' . $answer->photo) }}" alt="Answer Photo" class="img-fluid mb-3 rounded d-block mx-auto" style="width: 450px; height: auto;">
+                  
+                @endif
+                <div class="d-flex align-items-center">
+                  <p class="mb-0 mr-2">&nbsp; &nbsp; &nbsp;{{ $answer->likes->count() }} &nbsp;</p>
+                  @if($answer->user_id != auth()->user()->id)
+                  <form action="{{ route('answers.like', $answer->id) }}" method="POST" onsubmit="sessionStorage.setItem('isRefreshAfterLike', 'true'); saveScrollPositionForLike(); return true;">
+                      @csrf
+                      <button type="submit" class="btn btn-link p-0">
+                          <i class="fa-regular fa-thumbs-up fa-2x" style="color:#189F92;"></i>
+                      </button>
+                    </form>
+                    @else
+                    <button type="submit" class="btn btn-link p-0">
+                        <i class="fa-regular fa-thumbs-up fa-2x" style="color:#189F92;"></i>
+                    </button>
+
+                  @endif
+              </div>
+                <div class="card mt-2" style="padding-top: 15px; padding-bottom: 15px; padding-left: 18px; padding-right: 18px;">
+                  <h1 class="h4 mb-3 fw-bold" style="color:#189F92">Jawaban dari Pertanyaan:</h1>
+                  <h5>
+                    &#64;{{ $answer->question->user->username }}
+                  </h5>
+                  <p>
+                    {{ $answer->question->body }}
+                  </p>
+                  <p class="card-text">
+                    {{ $answer->created_at->diffForHumans() }}
+                  </p>
+                </div>
+                <a href="/question/{{ $answer->question->slug }}" class="btn btn-primary float-end mt-3" style="border-radius: 20px;">
+                  Lihat Lebih Lanjut
+                </a>
+              </div>
+            </div>
+            @endforeach
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous">
+    </script>
   </body>
+
 </html>

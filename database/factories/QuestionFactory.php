@@ -20,9 +20,9 @@ class QuestionFactory extends Factory
         return [
             'slug' => $this->faker->slug(),
             'body' => $this->faker->paragraphs(rand(1, 5), true),
-            'photo' => $this->faker->imageUrl(640, 480, true),
+            'photo' => null,
             'user_id' => mt_rand(1,10),
-            'subject_id' => mt_rand(1,6)
+            'subject_id' => mt_rand(1,14)
         ];
     }
 }

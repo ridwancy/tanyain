@@ -82,10 +82,24 @@ class UserController extends Controller
     {
         $user = User::where('username', $username)->firstOrFail();
 
+        //tambahan
+        $userQuestions = $user->questions()->get();
+        foreach ($userQuestions as $question) {
+            foreach ($question->answers as $answer) {
+                $answer->comments()->delete();
+            }
+            $question->answers()->delete();
+        }
         $user->questions()->delete();
+        $userAnswers = $user->answers()->get();
+        foreach ($userAnswers as $answer) {
+            $answer->comments()->delete();
+        }
         $user->answers()->delete();
         $user->comments()->delete();
         $user->delete();
+
+
     
         return redirect('/register')->with('success', 'Akun berhasil dihapus!');
     }
